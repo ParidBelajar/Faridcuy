@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Farid's World 🌟</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#000;
+  color:white;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* BACKGROUND VIDEO */
+.bg-container{position:fixed;inset:0;z-index:-2;}
+.bg-container video{
+  position:absolute;top:50%;left:50%;
+  width:100vw;height:100vh;
+  object-fit:cover;
+  transform:translate(-50%,-50%);
+}
+
+/* PAGE BOX */
+.page{
+  text-align:center;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(6px);
+  padding:1.6rem 1rem;
+  border-radius:18px;
+  width:90%;
+  max-width:380px;
+  box-shadow:0 0 25px rgba(0,0,0,0.6);
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  opacity:0;
+  pointer-events:none;
+  transition:0.4s ease;
+}
+.active{opacity:1;pointer-events:auto;}
+
+/* RGB BUTTON */
+.rgb-btn{
+  padding:10px 20px;
+  font-weight:600;
+  background:linear-gradient(45deg,#ff3366,#33ff99,#3366ff,#ff33cc);
+  background-size:400% 400%;
+  border:none;
+  color:white;
+  border-radius:40px;
+  cursor:pointer;
+  width:90%;
+  margin:0.4rem auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  animation:rgbFlow 14s ease infinite;
+}
+@keyframes rgbFlow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* MUSIC PLAYER */
+#musicPlayer{
+  margin-top:14px;
+  background:rgba(0,0,0,0.85);
+  padding:8px 14px;
+  border-radius:40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  width:100%;
+  font-size:0.8rem;
+  box-shadow:0 0 15px rgba(0,255,150,0.2);
+}
+#playPauseBtn{
+  background:rgba(255,255,255,0.2);
+  border:none;
+  color:white;
+  width:30px;height:30px;
+  border-radius:50%;
+  cursor:pointer;
+}
+#progressBar{
+  flex:1;
+  height:4px;
+  background:rgba(255,255,255,0.2);
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+}
+#progress{
+  height:100%;
+  width:0%;
+  background:#33ff99;
+}
+
+/* NAV BUTTON */
+#backBtn,#menuBtn{
+  position:fixed;top:14px;
+  background:rgba(0,0,0,0.8);
+  padding:8px 12px;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:10;
+}
+#backBtn{left:14px;display:none;}
+#menuBtn{right:14px;}
+
+/* SYSTEM MONITOR */
+#devicePanel{
+  position:fixed;
+  top:60px;
+  right:-320px;
+  width:290px;
+  background:rgba(0,0,0,0.95);
+  backdrop-filter:blur(8px);
+  padding:16px;
+  border-radius:18px;
+  font-size:0.75rem;
+  line-height:1.4rem;
+  z-index:10;
+  transition:0.4s ease;
+  box-shadow:0 0 20px rgba(0,255,150,0.15);
+}
+#devicePanel.active{right:14px;}
+#devicePanel h3{
+  text-align:center;
+  margin-bottom:10px;
+  font-size:0.9rem;
+  color:#33ff99;
+}
+
+/* ABOUT */
+.about-box{font-size:0.85rem;line-height:1.5rem;margin-top:10px;}
+.about-photo{
+  width:110px;height:110px;border-radius:50%;
+  object-fit:cover;margin:12px auto;display:block;
+  border:3px solid #33ff99;
+  box-shadow:0 0 15px rgba(0,255,150,0.6);
+}
+
+/* CREDIT GLOW */
+#credit{
+  position:fixed;
+  bottom:10px;
+  left:12px;
+  font-size:0.7rem;
+  background:rgba(0,0,0,0.6);
+  padding:6px 10px;
+  border-radius:12px;
+}
+.ai-glow{
+  color:#33ff99;
+  font-weight:600;
+  text-shadow:0 0 5px #33ff99,
+              0 0 10px #33ff99,
+              0 0 20px #00ffcc;
+  animation:pulseGlow 2s infinite alternate;
+}
+@keyframes pulseGlow{
+  from{opacity:0.7;}
+  to{opacity:1;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-container">
+  <video autoplay loop muted playsinline>
+    <source src="./assets/video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div id="welcome" class="page active">
+  <h1 id="greetingText"></h1>
+  <div>Welcome To My Website</div>
+  <button id="enterBtn" class="rgb-btn">Enter →</button>
+
+  <div id="musicPlayer">
+    <button id="playPauseBtn">▶</button>
+    <div id="progressBar"><div id="progress"></div></div>
+    <span id="timeDisplay">00:00</span>
+  </div>
+</div>
+
+<div id="social" class="page">
+  <h2>Select one</h2>
+  <a href="https://www.instagram.com/faridhellmode" target="_blank" class="rgb-btn"><i class="fab fa-instagram"></i> Instagram</a>
+  <a href="https://x.com/FaridTheServant" target="_blank" class="rgb-btn"><i class="fab fa-x-twitter"></i> X</a>
+  <a href="https://www.tiktok.com/@f..._012" target="_blank" class="rgb-btn"><i class="fab fa-tiktok"></i> TikTok</a>
+  <a href="#" class="rgb-btn"><i class="fab fa-facebook"></i> Facebook</a>
+  <button id="aboutBtn" class="rgb-btn"><i class="fas fa-user"></i> About Me</button>
+  <a href="https://whatsapp.com/channel/0029VbCm39A9mrGcKLCloo0Q" target="_blank" class="rgb-btn">
+  <i class="fab fa-whatsapp"></i> Saluran WhatsApp
+</a>
+</div>
+
+<div id="about" class="page">
+  <h2>About Me 🌟</h2>
+  <img src="./assets/foto.jpg" class="about-photo">
+  <div class="about-box">
+    Halo! Aku Farid 👋<br><br>
+    Orang Gabut<br>
+    Islam<br>
+    Suka eksplor hal baru<br><br>
+    Terima kasih sudah mampir ✨
+  </div>
+</div>
+
+<div id="backBtn"><i class="fas fa-arrow-left"></i></div>
+<div id="menuBtn"><i class="fas fa-bars"></i></div>
+
+<div id="devicePanel">
+  <h3>System Monitor</h3>
+  <div id="deviceInfo"></div>
+</div>
+
+<div id="credit">
+© Powered by 
+<a href="https://chat.openai.com" target="_blank" class="ai-glow">ChatGPT</a> 
+& 
+<a href="https://grok.x.ai" target="_blank" class="ai-glow">Grok AI</a>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="./assets/bgMusic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let pageStartTime = Date.now();
+const bgMusic = document.getElementById("bgMusic");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const timeDisplay = document.getElementById("timeDisplay");
+const progressBar = document.getElementById("progressBar");
+const progress = document.getElementById("progress");
+const deviceInfo = document.getElementById("deviceInfo");
+
+document.getElementById("greetingText").textContent =
+new Date().getHours()<12?"Selamat Pagi 👋":
+new Date().getHours()<18?"Selamat Siang 👋":
+"Selamat Malam 🌙";
+
+document.addEventListener("click",()=>bgMusic.play().catch(()=>{}),{once:true});
+
+playPauseBtn.onclick=e=>{
+e.stopPropagation();
+if(bgMusic.paused){
+  bgMusic.play();
+  playPauseBtn.textContent="⏸";
+}else{
+  bgMusic.pause();
+  playPauseBtn.textContent="▶";
+}
+};
+
+bgMusic.ontimeupdate=()=>{
+if(!bgMusic.duration) return;
+const m=Math.floor(bgMusic.currentTime/60);
+const s=Math.floor(bgMusic.currentTime%60);
+timeDisplay.textContent=
+m.toString().padStart(2,'0')+":"+
+s.toString().padStart(2,'0');
+progress.style.width=(bgMusic.currentTime/bgMusic.duration)*100+"%";
+};
+
+progressBar.onclick=e=>{
+if(!bgMusic.duration) return;
+const width=progressBar.clientWidth;
+bgMusic.currentTime=(e.offsetX/width)*bgMusic.duration;
+};
+
+function updateDeviceInfo(){
+  const now = new Date();
+
+  const day = String(now.getDate()).padStart(2,'0');
+  const month = String(now.getMonth()+1).padStart(2,'0');
+  const year = now.getFullYear();
+
+  const hours = String(now.getHours()).padStart(2,'0');
+  const minutesClock = String(now.getMinutes()).padStart(2,'0');
+  const secondsClock = String(now.getSeconds()).padStart(2,'0');
+
+  const uptime = Math.floor((Date.now() - pageStartTime)/1000);
+  const minutesUptime = Math.floor(uptime/60);
+  const secondsUptime = uptime%60;
+
+  deviceInfo.innerHTML = `
+  📅 Date: ${day}/${month}/${year}<br>
+  ⏰ Time: ${hours}:${minutesClock}:${secondsClock}<br>
+  🌐 Browser: ${navigator.userAgent}<br>
+  💻 Platform: ${navigator.platform}<br>
+  📱 RAM: ${navigator.deviceMemory || "Unknown"} GB<br>
+  🖥 CPU Core: ${navigator.hardwareConcurrency || "Unknown"}<br>
+  📶 Online: ${navigator.onLine ? "Yes" : "No"}<br>
+  ⏱ Uptime: ${minutesUptime}m ${secondsUptime}s<br>
+  🖼 Screen: ${screen.width} x ${screen.height}
+  `;
+}
+
+setInterval(updateDeviceInfo,1000);
+updateDeviceInfo();
+
+const welcome=document.getElementById("welcome");
+const social=document.getElementById("social");
+const about=document.getElementById("about");
+const backBtn=document.getElementById("backBtn");
+
+document.getElementById("enterBtn").onclick=()=>{
+welcome.classList.remove("active");
+social.classList.add("active");
+backBtn.style.display="block";
+};
+document.getElementById("aboutBtn").onclick=()=>{
+social.classList.remove("active");
+about.classList.add("active");
+};
+backBtn.onclick=()=>{
+if(about.classList.contains("active")){
+about.classList.remove("active");
+social.classList.add("active");
+}else{
+social.classList.remove("active");
+welcome.classList.add("active");
+backBtn.style.display="none";
+}
+};
+document.getElementById("menuBtn").onclick=()=>{
+document.getElementById("devicePanel").classList.toggle("active");
+};
+</script>
+
+</body>
+</html>
